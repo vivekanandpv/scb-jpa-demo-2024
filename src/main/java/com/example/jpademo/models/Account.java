@@ -12,7 +12,7 @@ public class Account {
     private String accountBranch;
     private double accountBalance;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     @JoinColumn(name = "customerId", insertable = false, updatable = false)
     private Customer customer;
     private int customerId;

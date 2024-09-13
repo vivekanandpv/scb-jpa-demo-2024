@@ -40,15 +40,10 @@ public class AccountServiceImplementation implements AccountService {
         return toViewModel(getEntityById(id));
     }
 
-    @Override
-    public AccountViewModel create(AccountCreateViewModel viewModel) {
-        Customer masterEntity = getParentEntityById(viewModel.getCustomerId());
-        Account entity = toEntity(viewModel);
-
-        entity.setCustomer(masterEntity);
-
-        return toViewModel(accountRepository.saveAndFlush(entity));
-    }
+        @Override
+        public AccountViewModel create(AccountCreateViewModel viewModel) {
+            return toViewModel(accountRepository.saveAndFlush(toEntity(viewModel)));
+        }
 
     @Override
     public AccountViewModel update(int id, AccountUpdateViewModel viewModel) {
@@ -76,6 +71,10 @@ public class AccountServiceImplementation implements AccountService {
     private Account toEntity(AccountCreateViewModel viewModel) {
         Account entity = new Account();
         BeanUtils.copyProperties(viewModel, entity);
+
+        Customer masterEntity = getParentEntityById(viewModel.getCustomerId());
+        entity.setCustomer(masterEntity);
+
         return entity;
     }
 
